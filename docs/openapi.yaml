@@ -1,0 +1,2861 @@
+basePath: /api
+definitions:
+  github_com_venu-live_venu-api_internal_db.BookingStatus:
+    enum:
+      - PENDING
+      - CONFIRMED
+      - FAILED
+    type: string
+    x-enum-varnames:
+      - BookingStatusPENDING
+      - BookingStatusCONFIRMED
+      - BookingStatusFAILED
+  github_com_venu-live_venu-api_internal_db.Event:
+    properties:
+      advisory_notice:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      ends_at:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      location_area:
+        type: string
+      starts_at:
+        type: string
+      status:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.EventStatus"
+      title:
+        type: string
+      transit_info:
+        type: string
+      venue_name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_db.EventArtist:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      event_id:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_db.EventStatus:
+    enum:
+      - DRAFT
+      - ON_SALE
+      - SOLD_OUT
+      - ENDED
+    type: string
+    x-enum-varnames:
+      - EventStatusDRAFT
+      - EventStatusONSALE
+      - EventStatusSOLDOUT
+      - EventStatusENDED
+  github_com_venu-live_venu-api_internal_db.GenderType:
+    enum:
+      - MALE
+      - FEMALE
+      - OTHER
+    type: string
+    x-enum-varnames:
+      - GenderTypeMALE
+      - GenderTypeFEMALE
+      - GenderTypeOTHER
+  github_com_venu-live_venu-api_internal_db.MenuCategory:
+    enum:
+      - DRINK
+      - FOOD
+    type: string
+    x-enum-varnames:
+      - MenuCategoryDRINK
+      - MenuCategoryFOOD
+  github_com_venu-live_venu-api_internal_db.StaffRole:
+    enum:
+      - ADMIN
+      - SCANNER
+      - BARTENDER
+    type: string
+    x-enum-varnames:
+      - StaffRoleADMIN
+      - StaffRoleSCANNER
+      - StaffRoleBARTENDER
+  github_com_venu-live_venu-api_internal_db.TicketCategory:
+    properties:
+      base_price:
+        type: integer
+      category:
+        $ref: "#/definitions/pgtype.Text"
+      entry_count:
+        type: integer
+      event_id:
+        type: string
+      fnb_credit:
+        type: integer
+      id:
+        type: string
+      is_gender_strict:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_httpx.ErrorPayload:
+    properties:
+      details:
+        additionalProperties: {}
+        type: object
+      error:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.AdminStatsView:
+    properties:
+      active_events:
+        type: integer
+      bar_transactions:
+        type: integer
+      checked_in_tickets:
+        type: integer
+      confirmed_bookings:
+        type: integer
+      fnb_redeemed:
+        type: integer
+      fnb_remaining:
+        type: integer
+      per_event_performance:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.EventStatsView"
+        type: array
+      recent_gate_entries:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.RecentGateEntryView"
+        type: array
+      top_bar_items:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.TopBarItemView"
+        type: array
+      total_guests:
+        type: integer
+      total_revenue:
+        type: integer
+      total_tickets:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.BarLineItemHistoryView:
+    properties:
+      line_total:
+        type: integer
+      menu_item_id:
+        type: string
+      menu_item_name:
+        type: string
+      quantity:
+        type: integer
+      unit_price_at_sale:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.BarTicketSearchView:
+    properties:
+      bar_code:
+        type: string
+      category_name:
+        type: string
+      category_tier:
+        type: string
+      entry_count:
+        type: integer
+      event_ends_at:
+        type: string
+      event_id:
+        type: string
+      event_title:
+        type: string
+      food_balance:
+        type: integer
+      guests:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.GuestView"
+        type: array
+      initial_food_balance:
+        type: integer
+      is_checked_in:
+        type: boolean
+      recent_transactions:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.BarTransactionHistoryView"
+        type: array
+      ticket_id:
+        type: string
+      wallet_expired:
+        type: boolean
+    type: object
+  github_com_venu-live_venu-api_internal_services.BarTransactionHistoryView:
+    properties:
+      balance_after:
+        type: integer
+      balance_before:
+        type: integer
+      bartender_id:
+        type: string
+      bartender_username:
+        type: string
+      created_at:
+        type: string
+      delta_to_collect:
+        type: integer
+      items:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.BarLineItemHistoryView"
+        type: array
+      total_bill:
+        type: integer
+      transaction_id:
+        type: string
+      wallet_deducted:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.BartenderSaleView:
+    properties:
+      bartender_id:
+        type: string
+      bartender_username:
+        type: string
+      delta_collected:
+        type: integer
+      total_bill:
+        type: integer
+      transactions:
+        type: integer
+      wallet_deducted:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.ArtistInput:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.CreateArtistRequest:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.CreateEventRequest:
+    properties:
+      ends_at:
+        type: string
+      location:
+        type: string
+      starts_at:
+        type: string
+      status:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.EventStatus"
+      title:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.CreateHelpRequest:
+    properties:
+      event_id:
+        type: string
+      message:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.CreateHelpResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      message:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.CreateMenuItemRequest:
+    properties:
+      category:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.MenuCategory"
+      name:
+        type: string
+      unit_price:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.CreateStaffRequest:
+    properties:
+      password:
+        type: string
+      role:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.StaffRole"
+      username:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.CreateTicketTierRequest:
+    properties:
+      base_price:
+        type: integer
+      category:
+        type: string
+      entry_count:
+        type: integer
+      fnb_credit:
+        type: integer
+      is_gender_strict:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.EventDetailsView:
+    properties:
+      advisory_notice:
+        type: string
+      artists:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.EventArtist"
+        type: array
+      description:
+        type: string
+      ends_at:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      location_area:
+        type: string
+      seats:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services_seating.SeatInventoryView"
+        type: array
+      starts_at:
+        type: string
+      status:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.EventStatus"
+      tiers:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.EventTierView"
+        type: array
+      title:
+        type: string
+      transit_info:
+        type: string
+      upi_merchant_name:
+        type: string
+      upi_qr_image_url:
+        type: string
+      upi_vpa:
+        type: string
+      venue_name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.EventStatsView:
+    properties:
+      bar_sales_by_bartender:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.BartenderSaleView"
+        type: array
+      bar_transactions:
+        type: integer
+      checked_in_tickets:
+        type: integer
+      confirmed_bookings:
+        type: integer
+      confirmed_female_stags:
+        type: integer
+      event_id:
+        type: string
+      event_title:
+        type: string
+      female_guests:
+        type: integer
+      free_shots_redeemed:
+        type: integer
+      male_guests:
+        type: integer
+      other_guests:
+        type: integer
+      recent_gate_entries:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.RecentGateEntryView"
+        type: array
+      ticket_revenue:
+        type: integer
+      top_bar_items:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.TopBarItemView"
+        type: array
+      total_bar_bill:
+        type: integer
+      total_counter_delta:
+        type: integer
+      total_fnb_allocated:
+        type: integer
+      total_fnb_redeemed:
+        type: integer
+      total_fnb_remaining:
+        type: integer
+      total_guests:
+        type: integer
+      total_tickets:
+        type: integer
+      total_wallet_deducted:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.EventTierView:
+    properties:
+      base_price:
+        type: integer
+      category:
+        type: string
+      effective_price:
+        type: integer
+      entry_count:
+        type: integer
+      first_99_applied:
+        type: boolean
+      fnb_credit:
+        type: integer
+      free_slots_remaining:
+        type: integer
+      id:
+        type: string
+      includes_free_shot:
+        type: boolean
+      is_gender_strict:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.GateTicketView:
+    properties:
+      booking_status:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.BookingStatus"
+      category_name:
+        type: string
+      category_tier:
+        type: string
+      checked_in_at:
+        type: string
+      entry_count:
+        type: integer
+      event_ends_at:
+        type: string
+      event_id:
+        type: string
+      event_location:
+        type: string
+      event_starts_at:
+        type: string
+      event_title:
+        type: string
+      guests:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.GuestView"
+        type: array
+      is_checked_in:
+        type: boolean
+      reason:
+        type: string
+      ticket_id:
+        type: string
+      valid:
+        type: boolean
+    type: object
+  github_com_venu-live_venu-api_internal_services.GuestInput:
+    properties:
+      age:
+        type: integer
+      gender:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.GenderType"
+      is_primary_contact:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.GuestView:
+    properties:
+      age:
+        type: integer
+      free_shot_redeemed:
+        type: boolean
+      gender:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.GenderType"
+      id:
+        type: string
+      is_primary_contact:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.InitCheckoutRequest:
+    properties:
+      category_id:
+        type: string
+      contact_email:
+        type: string
+      contact_phone:
+        type: string
+      event_id:
+        type: string
+      gender:
+        type: string
+      guests:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.GuestInput"
+        type: array
+      primary_age:
+        type: integer
+      primary_name:
+        type: string
+      seat_selection:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_services_seating.SeatSelectionInput"
+      upi_transaction_id:
+        type: string
+      whatsapp_number:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.InitCheckoutResponse:
+    properties:
+      attendee_count:
+        type: integer
+      bar_code:
+        type: string
+      booking_id:
+        type: string
+      currency:
+        type: string
+      entry_count:
+        type: integer
+      first_99_applied:
+        type: boolean
+      fnb_credit:
+        type: integer
+      gate_qr_token:
+        type: string
+      payment_qr_data:
+        type: string
+      primary_guest_name:
+        type: string
+      seat_section:
+        type: string
+      seat_table_number:
+        type: integer
+      seat_table_size:
+        type: integer
+      status:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.BookingStatus"
+      ticket_id:
+        type: string
+      ticket_image_url:
+        type: string
+      ticket_url:
+        type: string
+      total_amount:
+        type: integer
+      upi_payment:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.UPIPaymentInstructions"
+      upi_transaction_id:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.PublicGuestView:
+    properties:
+      age_band:
+        type: string
+      free_shot_redeemed:
+        type: boolean
+      gender:
+        type: string
+      id:
+        type: string
+      is_primary_contact:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.PublicTicketView:
+    properties:
+      attendee_count:
+        type: integer
+      bar_code:
+        description: 5-char 1D linear bartender barcode (multi-use until event end)
+        type: string
+      bar_code_format:
+        type: string
+      booking_id:
+        type: string
+      booking_status:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.BookingStatus"
+      category_name:
+        type: string
+      category_tier:
+        type: string
+      checked_in_at:
+        type: string
+      entry_count:
+        type: integer
+      event_ends_at:
+        type: string
+      event_id:
+        type: string
+      event_location:
+        type: string
+      event_starts_at:
+        type: string
+      event_title:
+        type: string
+      fnb_expired:
+        type: boolean
+      food_balance:
+        type: integer
+      gate_qr_token:
+        description: Single-use gate QR (immediately expires & hidden once scanned)
+        type: string
+      guests:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.PublicGuestView"
+        type: array
+      id:
+        type: string
+      initial_food_balance:
+        type: integer
+      is_checked_in:
+        type: boolean
+      payment_qr_data:
+        type: string
+      primary_guest_name:
+        type: string
+      ticket_image_url:
+        type: string
+      total_amount:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.RecentGateEntryView:
+    properties:
+      bar_code:
+        type: string
+      category_name:
+        type: string
+      checked_in_at:
+        type: string
+      gatekeeper_username:
+        type: string
+      primary_guest:
+        type: string
+      ticket_id:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.RedeemItemsRequest:
+    properties:
+      bar_code:
+        type: string
+      delta_collected:
+        type: boolean
+      delta_payment_method:
+        type: string
+      idempotency_key:
+        type: string
+      items:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.RedeemLineItemInput"
+        type: array
+      redeem_free_shot_guest_id:
+        type: string
+      require_full_wallet_deduction:
+        type: boolean
+    type: object
+  github_com_venu-live_venu-api_internal_services.RedeemItemsResponse:
+    properties:
+      balance_before:
+        type: integer
+      bar_code:
+        type: string
+      delta_collected:
+        type: boolean
+      delta_payment_method:
+        type: string
+      delta_to_collect:
+        description: Noted for bartender counter collection reference
+        type: integer
+      free_shot_redeemed:
+        type: boolean
+      idempotent_replay:
+        type: boolean
+      remaining_balance:
+        type: integer
+      ticket_id:
+        type: string
+      total_bill:
+        type: integer
+      transaction_id:
+        type: string
+      wallet_deducted:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.RedeemLineItemInput:
+    properties:
+      menu_item_id:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.StaffAccountView:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      is_active:
+        type: boolean
+      role:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.StaffRole"
+      username:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.TopBarItemView:
+    properties:
+      item_category:
+        type: string
+      item_name:
+        type: string
+      quantity:
+        type: integer
+      revenue:
+        type: integer
+      unit_price_at_sale:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.UPIPaymentInstructions:
+    properties:
+      amount_inr:
+        type: integer
+      intent_uri:
+        type: string
+      merchant_name:
+        type: string
+      qr_image_url:
+        type: string
+      vpa:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.UpdateEventRequest:
+    properties:
+      advisory_notice:
+        type: string
+      artists:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.ArtistInput"
+        type: array
+      description:
+        type: string
+      ends_at:
+        type: string
+      location:
+        type: string
+      location_area:
+        type: string
+      starts_at:
+        type: string
+      status:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.EventStatus"
+      title:
+        type: string
+      transit_info:
+        type: string
+      venue_name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.UpdateTicketTierRequest:
+    properties:
+      base_price:
+        type: integer
+      category:
+        type: string
+      entry_count:
+        type: integer
+      fnb_credit:
+        type: integer
+      is_gender_strict:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.UpdateTierPriceRequest:
+    properties:
+      base_price:
+        type: integer
+      fnb_credit:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services.VerifyBookingRequest:
+    properties:
+      action:
+        description: APPROVE or REJECT
+        type: string
+      rejection_reason:
+        type: string
+    type: object
+  github_com_venu-live_venu-api_internal_services.VerifyBookingResponse:
+    properties:
+      booking_id:
+        type: string
+      expected_amount:
+        type: integer
+      status:
+        $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.BookingStatus"
+      ticket_id:
+        type: string
+      upi_transaction_id:
+        type: string
+      verified_at:
+        type: string
+      whatsapp_queued:
+        type: boolean
+    type: object
+  github_com_venu-live_venu-api_internal_services_seating.SeatConfigInput:
+    properties:
+      fnb_credit:
+        type: integer
+      table_total:
+        type: integer
+      section:
+        type: string
+      table_size:
+        type: integer
+      total_tables:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services_seating.SeatInventoryView:
+    properties:
+      available_tables:
+        type: integer
+      fnb_credit:
+        type: integer
+      table_total:
+        type: integer
+      reserved_tables:
+        type: integer
+      section:
+        type: string
+      table_size:
+        type: integer
+      ticket_category_id:
+        type: string
+      total_tables:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services_seating.SeatSelectionInput:
+    properties:
+      section:
+        type: string
+      table_size:
+        type: integer
+    type: object
+  github_com_venu-live_venu-api_internal_services_seating.SeatSnapshot:
+    properties:
+      event_id:
+        type: string
+      generated_at:
+        type: string
+      groups:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services_seating.SeatInventoryView"
+        type: array
+      tables:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services_seating.SeatView"
+        type: array
+    type: object
+  github_com_venu-live_venu-api_internal_services_seating.SeatView:
+    properties:
+      fnb_credit:
+        type: integer
+      is_booked:
+        type: boolean
+      table_total:
+        type: integer
+      section:
+        type: string
+      table_number:
+        type: integer
+      table_size:
+        type: integer
+    type: object
+  internal_handlers.StaffLoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_handlers.configureSeatingRequest:
+    properties:
+      rows:
+        items:
+          $ref: "#/definitions/github_com_venu-live_venu-api_internal_services_seating.SeatConfigInput"
+        type: array
+    type: object
+  internal_handlers.qrScanRequest:
+    properties:
+      qr_token:
+        type: string
+    type: object
+  internal_handlers.refreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  internal_handlers.submitUPIReferenceRequest:
+    properties:
+      contact_phone:
+        type: string
+      upi_transaction_id:
+        type: string
+    type: object
+  internal_handlers.updatePasswordRequest:
+    properties:
+      password:
+        type: string
+    type: object
+  pgtype.Text:
+    properties:
+      string:
+        type: string
+      valid:
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: General Admission Ticketing & F&B Wallet Backend.
+  title: House Untold Ticketing API
+  version: "1.0"
+paths:
+  /admin/artists/{id}:
+    delete:
+      description: Removes an artist from an event.
+      parameters:
+        - description: Artist UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Delete event artist
+      tags:
+        - Admin
+  /admin/audit-logs:
+    get:
+      description: Returns structured API call audit records; request bodies and secrets
+        are never stored.
+      parameters:
+        - description: Optional staff UUID filter
+          in: query
+          name: actor_id
+          type: string
+        - description: Optional request path substring filter
+          in: query
+          name: path
+          type: string
+        - description: Page size (default 50)
+          in: query
+          name: limit
+          type: integer
+        - description: Page offset
+          in: query
+          name: offset
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: List API audit logs
+      tags:
+        - Admin
+  /admin/bookings:
+    get:
+      description: Returns the manual UPI verification queue with UTRs and expected
+        amounts.
+      parameters:
+        - description: Booking status (default PENDING)
+          in: query
+          name: status
+          type: string
+        - description: Optional event UUID filter
+          in: query
+          name: event_id
+          type: string
+        - description: Page size (default 50)
+          format: int32
+          in: query
+          name: limit
+          type: integer
+        - description: Page offset
+          format: int32
+          in: query
+          name: offset
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: List bookings for verification
+      tags:
+        - Admin
+  /admin/bookings/{id}/verify:
+    post:
+      consumes:
+        - application/json
+      description: Atomically approves or rejects a pending booking and queues WhatsApp
+        delivery on approval.
+      parameters:
+        - description: Booking UUID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: APPROVE or REJECT decision
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.VerifyBookingRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.VerifyBookingResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: booking not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "409":
+          description: booking is no longer pending
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Verify booking payment
+      tags:
+        - Admin
+  /admin/tickets/search:
+    get:
+      description: Finds confirmed ticket passes by contact phone, guest name, or
+        UTR so admins can resend or redownload them.
+      parameters:
+        - description: Phone number, guest name, or UTR
+          in: query
+          name: q
+          type: string
+        - description: Page size (default 20, max 50)
+          in: query
+          name: limit
+          type: integer
+        - description: Page offset
+          in: query
+          name: offset
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.Envelope"
+        "400":
+          description: invalid limit or offset
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Search confirmed tickets
+      tags:
+        - Admin
+  /admin/events:
+    get:
+      description: Returns all events with confirmed booking, revenue, and check-in
+        totals.
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: List admin events
+      tags:
+        - Admin
+    post:
+      consumes:
+        - application/json
+      description: Creates a ticketing event with status DRAFT, ONSALE, SOLDOUT, or
+        ENDED.
+      parameters:
+        - description: Event details
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.CreateEventRequest"
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.Event"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Create event
+      tags:
+        - Admin
+  /admin/events/{id}:
+    put:
+      consumes:
+        - application/json
+      description: Updates event title, description, timings, status, venue, area,
+        transit, and advisory.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Event update payload
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.UpdateEventRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.Event"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Update event details
+      tags:
+        - Admin
+    delete:
+      description: Hides an event from public and admin event reads without removing
+        its bookings.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: event not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Soft delete event
+      tags:
+        - Admin
+  /admin/events/{id}/artists:
+    get:
+      description: Lists all artists linked to an event.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: List event artists
+      tags:
+        - Admin
+    post:
+      consumes:
+        - application/json
+      description: Adds a performing artist, headliner, or DJ to an event.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Artist payload
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.CreateArtistRequest"
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.EventArtist"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Create event artist
+      tags:
+        - Admin
+  /admin/events/{id}/seating:
+    put:
+      consumes:
+        - application/json
+      description: Sets table counts and per-person prices for sections A/B/C and
+        table sizes 10/15.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Seating configuration
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/internal_handlers.configureSeatingRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services_seating.SeatSnapshot"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "409":
+          description: Conflict
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Configure event seating
+      tags:
+        - Admin
+  /admin/events/{id}/tiers:
+    post:
+      consumes:
+        - application/json
+      description: Adds a category/tier to an existing event.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Ticket tier
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.CreateTicketTierRequest"
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.TicketCategory"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: event not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Create ticket tier
+      tags:
+        - Admin
+  /admin/help:
+    get:
+      consumes:
+        - application/json
+      description: Returns customer support inquiries with optional resolved filter
+        and pagination.
+      parameters:
+        - description: Filter by resolved status
+          in: query
+          name: resolved
+          type: boolean
+        - description: Page limit (default 50)
+          in: query
+          name: limit
+          type: integer
+        - description: Page offset (default 0)
+          in: query
+          name: offset
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: List customer help queries
+      tags:
+        - Admin
+  /admin/help/{id}/resolve:
+    post:
+      consumes:
+        - application/json
+      description: Marks a customer support inquiry as resolved by the authenticated
+        admin.
+      parameters:
+        - description: Help Message UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: help message not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Resolve customer help query
+      tags:
+        - Admin
+  /admin/staff:
+    get:
+      description: Lists all staff accounts with their roles and status.
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.StaffAccountView"
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: List all staff
+      tags:
+        - Admin
+    post:
+      consumes:
+        - application/json
+      description: Creates an ADMIN, SCANNER, or BARTENDER account.
+      parameters:
+        - description: Staff account
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.CreateStaffRequest"
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.StaffAccountView"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "409":
+          description: username already exists
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Create staff account
+      tags:
+        - Admin
+  /admin/staff/{id}:
+    delete:
+      description: Deactivates a staff account and revokes all previously issued sessions.
+      parameters:
+        - description: Staff UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.StaffAccountView"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role or self-deactivation
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: staff account not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Deactivate staff account
+      tags:
+        - Admin
+  /admin/staff/{id}/password:
+    patch:
+      consumes:
+        - application/json
+      description: Updates a staff password and revokes all previously issued sessions.
+      parameters:
+        - description: Staff UUID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: New password
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/internal_handlers.updatePasswordRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.StaffAccountView"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: staff account not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Update staff password
+      tags:
+        - Admin
+  /admin/stats:
+    get:
+      description: Returns landing-page KPIs, per-event performance, top bar items,
+        and recent gate entries across active events.
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.AdminStatsView"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Get aggregate admin stats
+      tags:
+        - Admin
+  /admin/stats/{event_id}:
+    get:
+      description: Returns ticketing, gate, F&B wallet, gender, top-item, bartender,
+        and recent-entry analytics for an event.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: event_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.EventStatsView"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: event not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Get event stats
+      tags:
+        - Admin
+  /admin/tiers/{id}:
+    patch:
+      consumes:
+        - application/json
+      description: Updates name, category, prices, entry count, and gender-strict
+        flag for an existing ticket tier.
+      parameters:
+        - description: Tier UUID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Tier payload
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.UpdateTicketTierRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.TicketCategory"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Update ticket tier
+      tags:
+        - Admin
+  /admin/tiers/{id}/price:
+    patch:
+      consumes:
+        - application/json
+      description: Updates base price and fnb credit for an existing ticket category.
+      parameters:
+        - description: Tier UUID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Price payload
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.UpdateTierPriceRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_db.TicketCategory"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Update tier price
+      tags:
+        - Admin
+  /admin/ws:
+    get:
+      description: Opens a WebSocket stream for live notifications on new bookings
+        and submitted UTRs.
+      responses: {}
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Admin real-time WebSocket
+      tags:
+        - Admin
+  /auth/login:
+    post:
+      consumes:
+        - application/json
+      description: Authenticate Admin, Scanner, or Bartender
+      parameters:
+        - description: Login credentials
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/internal_handlers.StaffLoginRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Staff Login
+      tags:
+        - Auth
+  /auth/logout:
+    post:
+      description: Clears session cookies and increments the staff token version to
+        revoke all issued tokens.
+      parameters:
+        - description: Bearer access token when cookie is unavailable
+          in: header
+          name: Authorization
+          type: string
+        - description: Allowed browser origin for cookie-based logout
+          in: header
+          name: Origin
+          type: string
+        - description: Browser fetch site header
+          in: header
+          name: Sec-Fetch-Site
+          type: string
+        - description: Set by non-cross-site browser clients
+          in: header
+          name: X-Requested-With
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: cross-site logout origin rejected
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Logout staff session
+      tags:
+        - Auth
+  /auth/refresh:
+    post:
+      consumes:
+        - application/json
+      description: Rotates the staff token version and issues a new access token from
+        a refresh cookie or JSON body.
+      parameters:
+        - description: Allowed browser origin for cookie-based refresh
+          in: header
+          name: Origin
+          type: string
+        - description: Browser fetch site header
+          in: header
+          name: Sec-Fetch-Site
+          type: string
+        - description: Set by non-cross-site browser clients
+          in: header
+          name: X-Requested-With
+          type: string
+        - description: Refresh token when cookie is unavailable
+          in: body
+          name: payload
+          schema:
+            $ref: "#/definitions/internal_handlers.refreshRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: refresh token invalid, expired, or reused
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: cross-site refresh origin rejected
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Refresh staff session
+      tags:
+        - Auth
+  /checkout/{booking_id}/upi-reference:
+    post:
+      consumes:
+        - application/json
+      description: Binds a UTR to a pending booking using the original contact_phone
+        as a shared secret.
+      parameters:
+        - description: Booking UUID
+          in: path
+          name: booking_id
+          required: true
+          type: string
+        - description: UTR and booking contact phone
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/internal_handlers.submitUPIReferenceRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: invalid booking id or UTR
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: booking not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "409":
+          description: duplicate UTR
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Submit UPI transaction reference
+      tags:
+        - Checkout
+  /checkout/init:
+    post:
+      consumes:
+        - application/json
+      description: Create a confirmed UPI checkout booking with guest details and
+        payment instructions
+      parameters:
+        - description: Checkout request
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.InitCheckoutRequest"
+        - description: Client-generated key preventing duplicate checkout submissions
+          in: header
+          name: Idempotency-Key
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.InitCheckoutResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: category not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "409":
+          description: duplicate idempotency key or UTR
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Initialize guest checkout
+      tags:
+        - Checkout
+  /counter/menu:
+    get:
+      description: Returns all active food and drink menu items.
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: List bar menu
+      tags:
+        - Bar
+    post:
+      consumes:
+        - application/json
+      description: Adds a new active food or drink item to the bar menu.
+      parameters:
+        - description: Menu item
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.CreateMenuItemRequest"
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Create bar menu item
+      tags:
+        - Bar
+  /counter/menu/{id}:
+    delete:
+      description: Soft-deletes a menu item while preserving historical transaction
+        audit records.
+      parameters:
+        - description: Menu item UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: invalid menu item id
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: menu item not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Delete bar menu item
+      tags:
+        - Bar
+  /counter/redeem:
+    post:
+      consumes:
+        - application/json
+      description: Atomically prices items, optionally redeems a free shot, deducts
+        wallet balance, and records the audited transaction.
+      parameters:
+        - description: Optional retry-safe key bound to barcode, items, and quantities
+          in: header
+          name: Idempotency-Key
+          type: string
+        - description: Barcode, items, and redemption options
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.RedeemItemsRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.RedeemItemsResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: ticket not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "409":
+          description: unconfirmed ticket, expired wallet, concurrent update, or ineligible
+            free shot
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Redeem bar items
+      tags:
+        - Bar
+  /counter/search:
+    get:
+      description: Looks up a confirmed ticket, its guests, wallet balance, and recent
+        bar history.
+      parameters:
+        - description: 5-character barcode (bar_code takes precedence over code)
+          in: query
+          name: bar_code
+          type: string
+        - description: Alias for bar_code
+          in: query
+          name: code
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.BarTicketSearchView"
+        "400":
+          description: invalid barcode
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: ticket not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Search ticket by bartender barcode
+      tags:
+        - Bar
+  /counter/tickets/{bar_code}/history:
+    get:
+      description: Returns recent audited bar transactions for a ticket barcode.
+      parameters:
+        - description: 5-character barcode
+          in: path
+          name: bar_code
+          required: true
+          type: string
+        - description: Maximum transactions to return (default 50)
+          format: int32
+          in: query
+          name: limit
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: invalid barcode
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: ticket not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Get ticket bar history
+      tags:
+        - Bar
+  /events:
+    get:
+      description: Public event listing with tier price breakdown and group seating
+        inventory.
+      parameters:
+        - default: ON_SALE
+          description: ALL, ON_SALE, SOLD_OUT, or ENDED
+          in: query
+          name: status
+          type: string
+        - default: 50
+          description: Page size
+          in: query
+          name: limit
+          type: integer
+        - default: 0
+          description: Page offset
+          in: query
+          name: offset
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: List public events
+      tags:
+        - Events
+  /events/{id}:
+    get:
+      description: Returns event metadata, dynamic first-99 pricing tiers, and group
+        seating inventory.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.EventDetailsView"
+        "400":
+          description: invalid event id
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: event not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Get event details
+      tags:
+        - Events
+  /events/{id}/seats:
+    get:
+      description: Public snapshot of section A/B/C table inventory, prices, and live
+        booked state.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services_seating.SeatSnapshot"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: List event seats
+      tags:
+        - Events
+  /events/{id}/seats/ws:
+    get:
+      description: Public websocket stream; emits a full SeatSnapshot immediately
+        and after every reservation/config change.
+      parameters:
+        - description: Event UUID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "101":
+          description: websocket upgrade
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Subscribe to seat updates
+      tags:
+        - Events
+  /gate/check-in:
+    post:
+      consumes:
+        - application/json
+      description: Atomically checks in a confirmed ticket and immediately expires
+        its single-use gate QR.
+      parameters:
+        - description: Gate QR token
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/internal_handlers.qrScanRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.GateTicketView"
+        "400":
+          description: invalid or expired QR token
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: ticket not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "409":
+          description: payment unconfirmed, event ended, or QR already used
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Check in ticket
+      tags:
+        - Gate
+  /gate/validate:
+    post:
+      consumes:
+        - application/json
+      description: Verifies a signed gate QR token and returns admission details without
+        mutating state.
+      parameters:
+        - description: Gate QR token
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/internal_handlers.qrScanRequest"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.GateTicketView"
+        "400":
+          description: invalid or expired QR token
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "403":
+          description: insufficient role
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: ticket not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limited
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      security:
+        - BearerAuth, CookieAuth: []
+      summary: Validate gate QR
+      tags:
+        - Gate
+  /health:
+    get:
+      description: Reports service health and PostgreSQL pool statistics.
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: healthy
+          schema:
+            additionalProperties: true
+            type: object
+        "503":
+          description: database unavailable
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Health check
+      tags:
+        - System
+  /help:
+    post:
+      consumes:
+        - application/json
+      description: Allows patrons/guests to submit help inquiries or payment issues
+        to venue admins.
+      parameters:
+        - description: Help query details
+          in: body
+          name: payload
+          required: true
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.CreateHelpRequest"
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.CreateHelpResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "429":
+          description: rate limit exceeded
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Submit customer help request
+      tags:
+        - Support
+  /tickets/{uuid}:
+    get:
+      description: Returns ticket, booking, and masked guest details; barcodes are
+        omitted until payment is confirmed.
+      parameters:
+        - description: Ticket UUID
+          in: path
+          name: uuid
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_services.PublicTicketView"
+        "400":
+          description: invalid ticket uuid
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: ticket not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Get public ticket
+      tags:
+        - Tickets
+  /tickets/{uuid}/image:
+    get:
+      description: Renders the confirmed ticket pass as a PNG image.
+      parameters:
+        - description: Ticket UUID
+          in: path
+          name: uuid
+          required: true
+          type: string
+      produces:
+        - image/png
+      responses:
+        "200":
+          description: PNG image bytes
+          schema:
+            type: string
+        "400":
+          description: invalid ticket uuid
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "404":
+          description: ticket not found
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "409":
+          description: ticket not confirmed
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/github_com_venu-live_venu-api_internal_httpx.ErrorPayload"
+      summary: Get ticket PNG
+      tags:
+        - Tickets
+securityDefinitions:
+  BearerAuth:
+    description: Staff access JWT in "Bearer <token>" format.
+    in: header
+    name: Authorization
+    type: apiKey
+  CookieAuth:
+    description: HttpOnly staff access cookie used by browser clients.
+    in: cookie
+    name: venu_access
+    type: apiKey
+swagger: "2.0"

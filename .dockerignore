@@ -1,0 +1,11 @@
+.env*
+test/
+loadtest/
+cmd/seed/
+cmd/loadtest/
+cmd/qrsample/
+reports/
+scripts/
+*.md
+*.log
+.loadtest/

@@ -1,0 +1,46 @@
+# ==============================================================================
+# Backend .gitignore — Go API Service
+# ==============================================================================
+
+# Compiled Binaries & Outputs
+/api
+api
+venu-api
+venu-migrate
+/bin/
+bin/
+/out/
+out/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test Binaries & Coverage Reports
+*.test
+*.test.*
+*.out
+coverage*.out
+coverage.html
+reports/
+*.log
+.loadtest/
+/tmp/
+tmp/
+
+# Environment Variables & Secrets
+.env
+.env.*
+.env.local
+*.local
+!.env.example
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
