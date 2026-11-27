@@ -60,11 +60,23 @@ func NewPostgresPool(ctx context.Context, pc PoolConfig) (*pgxpool.Pool, error) 
 		return nil, fmt.Errorf("connect_pg_pool: %w", err)
 	}
 
-	pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-	if err := pool.Ping(pingCtx); err != nil {
-		pool.Close()
-		return nil, fmt.Errorf("ping_pg_pool: %w", err)
+	// Retry ping with backoff to accommodate serverless cold starts (e.g. Neon scale-to-zero)
+	var pingErr error
+	for attempt := 1; attempt <= 4; attempt++ {
+		pingCtx, cancel := context.WithTimeout(ctx, 8*time.Second)
+		pingErr = pool.Ping(pingCtx)
+		cancel()
+		if pingErr == nil {
+			return pool, nil
+		}
+		select {
+		case <-ctx.Done():
+			pool.Close()
+			return nil, fmt.Errorf("ping_pg_pool: %w", ctx.Err())
+		case <-time.After(2 * time.Second):
+		}
 	}
-	return pool, nil
+
+	pool.Close()
+	return nil, fmt.Errorf("ping_pg_pool: %w", pingErr)
 }
