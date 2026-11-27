@@ -83,9 +83,9 @@ func NewRouter(d Deps) http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		_, _ = w.Write(docs.SwaggerIndexHTML())
 	}
+	r.Get("/openapi.yaml", serveOpenAPI)
+	r.Get("/swagger/doc.json", serveSwaggerJSON)
 	if d.Cfg.Env != "production" {
-		r.Get("/openapi.yaml", serveOpenAPI)
-		r.Get("/swagger/doc.json", serveSwaggerJSON)
 		r.Get("/swagger/index.html", serveSwaggerIndex)
 		r.Get("/swagger/*", httpSwagger.Handler(
 			httpSwagger.URL("/swagger/doc.json"),

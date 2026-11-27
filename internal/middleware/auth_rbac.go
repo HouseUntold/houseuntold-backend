@@ -241,21 +241,45 @@ func (rb *RBAC) RequireRole(allowed ...string) func(http.Handler) http.Handler {
 
 func CORS(allowedOrigins []string) func(http.Handler) http.Handler {
 	originSet := make(map[string]struct{}, len(allowedOrigins))
+	hasLocalhost := false
 	for _, o := range allowedOrigins {
-		trimmed := strings.TrimSpace(o)
+		trimmed := strings.TrimRight(strings.TrimSpace(o), "/")
 		if trimmed != "" && trimmed != "*" {
 			originSet[trimmed] = struct{}{}
+			if strings.HasPrefix(trimmed, "http://localhost") || strings.HasPrefix(trimmed, "http://127.0.0.1") {
+				hasLocalhost = true
+			}
 		}
+	}
+
+	isAllowed := func(origin string) bool {
+		if origin == "" {
+			return false
+		}
+		clean := strings.TrimRight(origin, "/")
+		if _, ok := originSet[clean]; ok {
+			return true
+		}
+		if hasLocalhost && (strings.HasPrefix(clean, "http://localhost") || strings.HasPrefix(clean, "http://127.0.0.1")) {
+			return true
+		}
+		return false
 	}
 
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			origin := strings.TrimSpace(r.Header.Get("Origin"))
-			if _, ok := originSet[origin]; ok {
+			if isAllowed(origin) {
 				w.Header().Set("Access-Control-Allow-Origin", origin)
 				w.Header().Set("Access-Control-Allow-Credentials", "true")
-				w.Header().Set("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type, Idempotency-Key, X-Requested-With")
-				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
+				reqHeaders := strings.TrimSpace(r.Header.Get("Access-Control-Request-Headers"))
+				if reqHeaders != "" {
+					w.Header().Set("Access-Control-Allow-Headers", reqHeaders)
+				} else {
+					w.Header().Set("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type, Idempotency-Key, X-Requested-With, Origin, Host, User-Agent, X-Metrics-Token")
+				}
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD")
+				w.Header().Set("Access-Control-Max-Age", "86400")
 				w.Header().Set("Vary", "Origin")
 			}
 			if r.Method == http.MethodOptions {
@@ -296,10 +320,19 @@ func (rb *RBAC) verifyCSRFOrigin(r *http.Request) bool {
 	if strings.TrimSpace(r.Header.Get("X-Requested-With")) != "" {
 		return true
 	}
-	origin := strings.TrimSpace(r.Header.Get("Origin"))
+	origin := strings.TrimRight(strings.TrimSpace(r.Header.Get("Origin")), "/")
 	if origin == "" {
 		return secFetchSite == "same-origin"
 	}
-	_, ok := rb.allowedOrigins[origin]
-	return ok
+	if _, ok := rb.allowedOrigins[origin]; ok {
+		return true
+	}
+	if strings.HasPrefix(origin, "http://localhost") || strings.HasPrefix(origin, "http://127.0.0.1") {
+		for allowed := range rb.allowedOrigins {
+			if strings.HasPrefix(allowed, "http://localhost") || strings.HasPrefix(allowed, "http://127.0.0.1") {
+				return true
+			}
+		}
+	}
+	return false
 }

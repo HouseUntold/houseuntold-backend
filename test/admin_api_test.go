@@ -317,6 +317,7 @@ func TestAdminUPIVerificationEventsTiersAndStats(t *testing.T) {
 
 	// Redeem 1 drink against the newly approved couple ticket so stats show bar activity
 	barCode := queue.Bookings[0].BarCode
+	env.checkInTicketByBarCode(barCode)
 	assertStatus(t, env.doRequest(http.MethodPost, "/api/counter/redeem", services.RedeemItemsRequest{
 		BarCode: barCode,
 		Items:   []services.RedeemLineItemInput{{MenuItemID: env.drinkID, Quantity: 2}}, // 1500 INR from configured credit

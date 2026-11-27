@@ -32,6 +32,7 @@ func confirmedInactiveFemaleTicket(t *testing.T, env *testEnv, adminToken, phone
 	assertStatus(t, rec, http.StatusOK)
 	var ticket services.PublicTicketView
 	decodeBody(t, rec, &ticket)
+	env.checkInTicketByBarCode(ticket.BarCode)
 	return ticket
 }
 

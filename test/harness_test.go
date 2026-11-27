@@ -2207,6 +2207,20 @@ func (e *testEnv) loginAs(username, password string) (string, []*http.Cookie) {
 	return payload.AccessToken, rec.Result().Cookies()
 }
 
+func (e *testEnv) checkInTicketByBarCode(barCode string) {
+	e.t.Helper()
+	e.store.mu.Lock()
+	defer e.store.mu.Unlock()
+	for id, t := range e.store.tickets {
+		if t.BarCode == barCode {
+			t.IsCheckedIn = true
+			t.CheckedInAt = pgtype.Timestamptz{Time: time.Now().UTC(), Valid: true}
+			e.store.tickets[id] = t
+			return
+		}
+	}
+}
+
 func bearerHeader(token string) map[string]string {
 	return map[string]string{"Authorization": "Bearer " + token}
 }
