@@ -57,12 +57,12 @@ LIMIT $6
 `
 
 type ListCheckoutLeadsParams struct {
-	IncludeCompleted bool      `json:"include_completed"`
-	EventID          uuid.UUID `json:"event_id"`
-	Query            string    `json:"query"`
-	CursorUpdatedAt  time.Time `json:"cursor_updated_at"`
-	CursorID         uuid.UUID `json:"cursor_id"`
-	PageLimit        int32     `json:"page_limit"`
+	IncludeCompleted bool               `json:"include_completed"`
+	EventID          uuid.UUID          `json:"event_id"`
+	Query            string             `json:"query"`
+	CursorUpdatedAt  pgtype.Timestamptz `json:"cursor_updated_at"`
+	CursorID         pgtype.UUID        `json:"cursor_id"`
+	PageLimit        int32              `json:"page_limit"`
 }
 
 type ListCheckoutLeadsRow struct {

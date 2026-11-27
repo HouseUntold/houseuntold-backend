@@ -86,8 +86,8 @@ WHERE (sqlc.arg(include_completed)::bool = true OR (cl.status NOT IN ('CONFIRMED
     OR COALESCE(cl.upi_transaction_id, '') ILIKE '%' || sqlc.arg(query)::text || '%'
   )
   AND (
-    sqlc.arg(cursor_updated_at)::timestamptz IS NULL
-    OR (cl.updated_at, cl.id) < (sqlc.arg(cursor_updated_at)::timestamptz, sqlc.arg(cursor_id)::uuid)
+    sqlc.narg(cursor_updated_at)::timestamptz IS NULL
+    OR (cl.updated_at, cl.id) < (sqlc.narg(cursor_updated_at)::timestamptz, sqlc.narg(cursor_id)::uuid)
   )
 ORDER BY cl.updated_at DESC, cl.id DESC
 LIMIT sqlc.arg(page_limit);

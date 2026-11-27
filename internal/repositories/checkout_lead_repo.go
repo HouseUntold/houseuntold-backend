@@ -94,16 +94,18 @@ func (r *TicketingRepository) ListCheckoutLeads(ctx context.Context, includeComp
 	if limit <= 0 || limit > 100 {
 		limit = 10
 	}
-	var curTime time.Time
-	if cursorUpdatedAt != nil {
-		curTime = cursorUpdatedAt.UTC()
+	var curTime pgtype.Timestamptz
+	var curID pgtype.UUID
+	if cursorUpdatedAt != nil && cursorID != uuid.Nil {
+		curTime = pgtype.Timestamptz{Time: cursorUpdatedAt.UTC(), Valid: true}
+		curID = pgtype.UUID{Bytes: cursorID, Valid: true}
 	}
 	rows, err := r.queries.ListCheckoutLeads(tctx, db.ListCheckoutLeadsParams{
 		IncludeCompleted: includeCompleted,
 		EventID:          eventID,
 		Query:            strings.TrimSpace(query),
 		CursorUpdatedAt:  curTime,
-		CursorID:         cursorID,
+		CursorID:         curID,
 		PageLimit:        limit,
 	})
 	if err != nil {
