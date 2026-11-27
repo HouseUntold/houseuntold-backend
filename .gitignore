@@ -4,9 +4,8 @@
 
 # Compiled Binaries & Outputs
 /api
-api
-venu-api
-venu-migrate
+/venu-api
+/venu-migrate
 /bin/
 bin/
 /out/
