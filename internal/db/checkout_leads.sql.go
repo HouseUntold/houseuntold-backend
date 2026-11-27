@@ -48,16 +48,20 @@ WHERE ($1::bool = true OR (cl.status NOT IN ('CONFIRMED') AND (b.status IS NULL 
     OR COALESCE(cl.primary_name, '') ILIKE '%' || $3::text || '%'
     OR COALESCE(cl.upi_transaction_id, '') ILIKE '%' || $3::text || '%'
   )
-ORDER BY cl.updated_at DESC
-LIMIT $5
-OFFSET $4
+  AND (
+    $4::timestamptz IS NULL
+    OR (cl.updated_at, cl.id) < ($4::timestamptz, $5::uuid)
+  )
+ORDER BY cl.updated_at DESC, cl.id DESC
+LIMIT $6
 `
 
 type ListCheckoutLeadsParams struct {
 	IncludeCompleted bool      `json:"include_completed"`
 	EventID          uuid.UUID `json:"event_id"`
 	Query            string    `json:"query"`
-	PageOffset       int32     `json:"page_offset"`
+	CursorUpdatedAt  time.Time `json:"cursor_updated_at"`
+	CursorID         uuid.UUID `json:"cursor_id"`
 	PageLimit        int32     `json:"page_limit"`
 }
 
@@ -89,7 +93,8 @@ func (q *Queries) ListCheckoutLeads(ctx context.Context, arg ListCheckoutLeadsPa
 		arg.IncludeCompleted,
 		arg.EventID,
 		arg.Query,
-		arg.PageOffset,
+		arg.CursorUpdatedAt,
+		arg.CursorID,
 		arg.PageLimit,
 	)
 	if err != nil {

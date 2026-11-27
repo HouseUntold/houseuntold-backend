@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
@@ -807,11 +808,22 @@ func (h *AdminHandler) ListCheckoutLeads(w http.ResponseWriter, r *http.Request)
 		if err != nil { httpx.HandleError(w, r, h.logger, httpx.NewBadRequest("invalid event_id", err)); return }
 		eventID = parsed
 	}
-	limit := int32(50)
+	limit := int32(10)
 	if raw := strings.TrimSpace(q.Get("limit")); raw != "" { if n, err := strconv.Atoi(raw); err == nil { limit = int32(n) } }
-	offset := int32(0)
-	if raw := strings.TrimSpace(q.Get("offset")); raw != "" { if n, err := strconv.Atoi(raw); err == nil { offset = int32(n) } }
-	items, err := h.svc.ListCheckoutLeads(r.Context(), includeCompleted, eventID, q.Get("q"), limit, offset)
+	var cursorUpdatedAt *time.Time
+	var cursorID uuid.UUID
+	if raw := strings.TrimSpace(q.Get("cursor")); raw != "" {
+		parts := strings.SplitN(raw, "|", 2)
+		if len(parts) == 2 {
+			if t, err := time.Parse(time.RFC3339Nano, parts[0]); err == nil {
+				if id, err := uuid.Parse(parts[1]); err == nil {
+					cursorUpdatedAt = &t
+					cursorID = id
+				}
+			}
+		}
+	}
+	page, err := h.svc.ListCheckoutLeads(r.Context(), includeCompleted, eventID, q.Get("q"), limit, cursorUpdatedAt, cursorID)
 	if err != nil { httpx.HandleError(w, r, h.logger, err); return }
-	_ = httpx.WriteJSON(w, http.StatusOK, httpx.Envelope{"leads": items, "count": len(items)})
+	_ = httpx.WriteJSON(w, http.StatusOK, httpx.Envelope{"leads": page.Leads, "count": page.Count, "next_cursor": page.NextCursor, "has_more": page.HasMore})
 }

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -87,14 +88,22 @@ func (r *TicketingRepository) MarkCheckoutLeadUTR(ctx context.Context, bookingID
 	return nil
 }
 
-func (r *TicketingRepository) ListCheckoutLeads(ctx context.Context, includeCompleted bool, eventID uuid.UUID, query string, limit, offset int32) ([]db.ListCheckoutLeadsRow, error) {
+func (r *TicketingRepository) ListCheckoutLeads(ctx context.Context, includeCompleted bool, eventID uuid.UUID, query string, limit int32, cursorUpdatedAt *time.Time, cursorID uuid.UUID) ([]db.ListCheckoutLeadsRow, error) {
 	tctx, cancel := r.withTimeout(ctx)
 	defer cancel()
+	if limit <= 0 || limit > 100 {
+		limit = 10
+	}
+	var curTime time.Time
+	if cursorUpdatedAt != nil {
+		curTime = cursorUpdatedAt.UTC()
+	}
 	rows, err := r.queries.ListCheckoutLeads(tctx, db.ListCheckoutLeadsParams{
 		IncludeCompleted: includeCompleted,
 		EventID:          eventID,
 		Query:            strings.TrimSpace(query),
-		PageOffset:       offset,
+		CursorUpdatedAt:  curTime,
+		CursorID:         cursorID,
 		PageLimit:        limit,
 	})
 	if err != nil {

@@ -159,6 +159,10 @@ func buildGateTicketView(row db.GetTicketDetailsByQRDigestRow, guests []db.Ticke
 		reason = "event_ended"
 	}
 
+	entryCount := row.EntryCount
+	if n := int32(len(guests)); n > 0 {
+		entryCount = n
+	}
 	view := GateTicketView{
 		Valid:            valid,
 		Reason:           reason,
@@ -169,7 +173,7 @@ func buildGateTicketView(row db.GetTicketDetailsByQRDigestRow, guests []db.Ticke
 		EventEndsAt:      row.EventEndsAt,
 		EventLocation:    row.EventLocation,
 		CategoryName:     row.CategoryName,
-		EntryCount:       row.EntryCount,
+		EntryCount:       entryCount,
 		BookingStatus:    row.BookingStatus,
 		IsCheckedIn:      row.IsCheckedIn,
 		PrimaryGuestName: PrimaryGuestName(guests),

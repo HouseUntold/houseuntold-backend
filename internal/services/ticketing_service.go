@@ -736,7 +736,7 @@ func (s *TicketingService) InitGuestCheckout(ctx context.Context, req InitChecko
 
 			bookingStatus := db.BookingStatusPENDING
 			upiText := pgtype.Text{Valid: false}
-			if pricing.TotalAmount == 0 || (pricing.TotalAmount == 1 && pricing.First99Applied) {
+			if pricing.TotalAmount == 0 {
 				bookingStatus = db.BookingStatusCONFIRMED
 			} else if upiTxnID != "" {
 				upiText = pgtype.Text{String: upiTxnID, Valid: true}
@@ -1192,6 +1192,10 @@ func (s *TicketingService) GetTicketByUUID(ctx context.Context, ticketID uuid.UU
 
 	primaryName := PrimaryGuestName(guests)
 	now := time.Now().UTC()
+	attendeeCount := details.EntryCount
+	if n := int32(len(guests)); n > 0 {
+		attendeeCount = n
+	}
 	view := PublicTicketView{
 		ID:                  details.ID,
 		BookingID:           details.BookingID,
@@ -1202,8 +1206,8 @@ func (s *TicketingService) GetTicketByUUID(ctx context.Context, ticketID uuid.UU
 		EventEndsAt:         details.EventEndsAt,
 		EventLocation:       details.EventLocation,
 		CategoryName:        details.CategoryName,
-		EntryCount:          details.EntryCount,
-		AttendeeCount:       details.EntryCount,
+		EntryCount:          attendeeCount,
+		AttendeeCount:       attendeeCount,
 		PrimaryGuestName:    primaryName,
 		TotalAmount:         details.TotalAmount,
 		FoodBalance:         details.FoodBalance,

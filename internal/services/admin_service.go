@@ -1597,12 +1597,24 @@ type CheckoutLeadView struct {
 	UpdatedAt        time.Time `json:"updated_at"`
 }
 
-func (s *AdminService) ListCheckoutLeads(ctx context.Context, includeCompleted bool, eventID uuid.UUID, query string, limit, offset int32) ([]CheckoutLeadView, error) {
-	if limit <= 0 || limit > 100 { limit = 50 }
-	if offset < 0 { offset = 0 }
-	rows, err := s.repo.ListCheckoutLeads(ctx, includeCompleted, eventID, query, limit, offset)
+type CheckoutLeadsPage struct {
+	Leads      []CheckoutLeadView `json:"leads"`
+	Count      int                `json:"count"`
+	NextCursor string             `json:"next_cursor,omitempty"`
+	HasMore    bool               `json:"has_more"`
+}
+
+func (s *AdminService) ListCheckoutLeads(ctx context.Context, includeCompleted bool, eventID uuid.UUID, query string, limit int32, cursorUpdatedAt *time.Time, cursorID uuid.UUID) (CheckoutLeadsPage, error) {
+	if limit <= 0 || limit > 100 {
+		limit = 10
+	}
+	rows, err := s.repo.ListCheckoutLeads(ctx, includeCompleted, eventID, query, limit+1, cursorUpdatedAt, cursorID)
 	if err != nil {
-		return nil, fmt.Errorf("svc_admin_list_leads: %w", err)
+		return CheckoutLeadsPage{}, fmt.Errorf("svc_admin_list_leads: %w", err)
+	}
+	hasMore := len(rows) > int(limit)
+	if hasMore {
+		rows = rows[:limit]
 	}
 	out := make([]CheckoutLeadView, 0, len(rows))
 	for _, r := range rows {
@@ -1635,5 +1647,10 @@ func (s *AdminService) ListCheckoutLeads(ctx context.Context, includeCompleted b
 		if sel.SeatSelection != nil { v.SeatSection = sel.SeatSelection.Section; v.SeatTableSize = sel.SeatSelection.TableSize }
 		out = append(out, v)
 	}
-	return out, nil
+	nextCursor := ""
+	if hasMore && len(rows) > 0 {
+		last := rows[len(rows)-1]
+		nextCursor = last.UpdatedAt.UTC().Format(time.RFC3339Nano) + "|" + last.ID.String()
+	}
+	return CheckoutLeadsPage{Leads: out, Count: len(out), NextCursor: nextCursor, HasMore: hasMore}, nil
 }
